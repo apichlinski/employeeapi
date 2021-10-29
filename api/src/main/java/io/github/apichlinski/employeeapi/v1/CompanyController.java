@@ -1,9 +1,8 @@
-package io.github.apichlinski.employeeapi;
+package io.github.apichlinski.employeeapi.v1;
 
 import io.github.apichlinski.employeeapi.company.Company;
 import io.github.apichlinski.employeeapi.company.CompanyFacade;
 import io.github.apichlinski.employeeapi.company.query.SimpleCompanyQuery;
-import io.github.apichlinski.employeeapi.employee.Employee;
 import io.github.apichlinski.employeeapi.employee.query.SimpleEmployeeQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +20,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("v1/company")
 class CompanyController {
     private final CompanyFacade companyFacade;
 
@@ -68,7 +67,7 @@ class CompanyController {
     })
     ResponseEntity<Company> createEmployee(@PathVariable int id, @RequestBody SimpleEmployeeQuery employee) {
         return companyFacade.createEmployee(id, employee.getFirstName(), employee.getLastName())
-                .map(ResponseEntity::ok)
+                .map(body -> ResponseEntity.created(URI.create("/" + id)).body(body))
                 .orElse(ResponseEntity.notFound().build());
     }
 

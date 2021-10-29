@@ -1,4 +1,4 @@
-#Employee API
+# Employee API
 
 ### Description
 Simple RestAPI application. Used technologies:
@@ -8,5 +8,9 @@ Simple RestAPI application. Used technologies:
 * Gradle with submodules
 * Database H2
 
-### Author
-Andrzej Pichlinski
+### Info
+Swagger: http://localhost:8080/swagger-ui/
+
+Endpoints: http://localhost:8080/
+
+Author: Andrzej Pichlinski

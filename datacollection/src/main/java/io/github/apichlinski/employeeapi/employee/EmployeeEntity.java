@@ -1,24 +1,30 @@
 package io.github.apichlinski.employeeapi.employee;
 
 import io.github.apichlinski.employeeapi.company.query.SimpleCompanyQuery;
+import io.github.apichlinski.employeeapi.permission.PermissionElectric;
+import io.github.apichlinski.employeeapi.permission.PermissionTechnical;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Getter
 @Setter
 @Table(name="EMPLOYEE")
-public class EmployeeEntity {
+class EmployeeEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -31,6 +37,12 @@ public class EmployeeEntity {
     @JoinColumn(name = "company_id")
     private SimpleCompanyQuery company;
 
+    @ManyToMany(cascade=CascadeType.ALL)
+    private Set<PermissionElectric> permissionsElectric = new HashSet<>();
+
+    @ManyToMany(cascade= CascadeType.ALL)
+    private Set<PermissionTechnical> permissionsTechnical = new HashSet<>();
+
     @PersistenceConstructor
     public EmployeeEntity() {}
 
@@ -42,14 +54,30 @@ public class EmployeeEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.company = company;
+        this.permissionsTechnical = permissionsTechnical;
+        this.permissionsElectric = permissionsElectric;
     }
 
-    public Employee toDto() {
+    Employee toDto() {
         return Employee.builder()
                 .id(id)
                 .firstName(lastName)
                 .lastName(firstName)
                 .company(company)
+                .permissionsTechnical(permissionsTechnical)
+                .permissionsElectric(permissionsElectric)
                 .build();
     }
+
+    void addPermissionElectric(PermissionElectric toAdd) {
+        permissionsElectric.add(toAdd);
+    }
+
+    void removePermissionElectric(PermissionElectric toRemove) { permissionsElectric.remove(toRemove); }
+
+    void addPermissionTechnical(PermissionTechnical toAdd) {
+        permissionsTechnical.add(toAdd);
+    }
+
+    void removePermissionTechnical(PermissionTechnical toRemove) { permissionsTechnical.remove(toRemove); }
 }

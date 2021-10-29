@@ -1,4 +1,4 @@
-package io.github.apichlinski.employeeapi;
+package io.github.apichlinski.employeeapi.permission;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
